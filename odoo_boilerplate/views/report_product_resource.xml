@@ -1,0 +1,143 @@
+<odoo>
+    <data>
+
+        <template id="product_resource_report_layout_standard">
+            <div class="header" style="height: 170px;">
+                <div class="row">
+                    <div class="col text-center" t-field="company.report_header" name="moto" style="color: red;">
+                        <span style="font-size: 24px;" t-field="company.name"/>
+                        <br/>
+                        <t t-if="company.street">
+                            <span t-field="company.street"/>
+                            <br/>
+                        </t>
+                        <t t-if="company.street2">
+                            <span t-field="company.street2"/>
+                            <br/>
+                        </t>
+                        <t t-if="company.city">
+                            <span t-field="company.city"/>
+                        </t>
+                        <t t-if="company.city">
+                            <span t-field="company.zip"/>
+                        </t>
+                        <p>
+                            <b>Resource View Count Report</b>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout"
+                 t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
+                <t t-raw="0"/>
+            </div>
+        </template>
+
+        <template id="product_resource_report_layout">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <t t-call="odoo_boilerplate.product_resource_report_layout_standard">
+                <t t-raw="0"/>
+            </t>
+
+        </template>
+
+        <!--Main content-->
+        <template id="product_resource_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="odoo_boilerplate.product_resource_report_layout">
+                        <div class="page">
+                            <style type="text/css">
+                                <![CDATA[
+                                table td, table th {
+                                    padding: 5px;
+                                }
+                            ]]>
+                            </style>
+                            <div class="row" style="padding-top: 50px;">
+                                <div class="col">
+                                    <h3 t-field="doc.product_id.name"/>
+                                    <table cellspacing="5" cellpadding="5" border="0" width="100%">
+                                        <tr>
+                                            <th>Resource</th>
+                                            <td>
+
+                                                <span t-field="doc.name"/>
+                                            </td>
+                                            <tr>
+                                                <th>Description</th>
+                                                <td>
+
+                                                    <span t-field="doc.description"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>URL</th>
+                                                <td>
+
+                                                    <span t-field="doc.url"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Views</th>
+                                                <td>
+                                                    <span t-field="doc.views"/>
+                                                </td>
+                                            </tr>
+                                        </tr>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- product_resource Report -->
+        <report
+                id="odoo_boilerplate_product_resource_action"
+                string="Resource View Count Report"
+                model="product.resource"
+                report_type="qweb-html"
+                name="odoo_boilerplate.product_resource_report"
+                file="odoo_boilerplate.product_resource_report"
+        />
+
+        <record id="paperformat_product_resource_report" model="report.paperformat">
+            <field name="name">Product Resources Report Paperformat</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="odoo_boilerplate_product_resource_action" model="ir.actions.report">
+            <field name="paperformat_id" ref="paperformat_product_resource_report"/>
+        </record>
+
+    </data>
+</odoo>

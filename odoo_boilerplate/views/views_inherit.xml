@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+
+
+        <!--Product List-->
+        <record model="ir.ui.view" id="product_resource_product_template_tree">
+            <field name="name">product.resource.product.template.tree</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <tree string="Products">
+                    <field name="default_code"/>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+         <!--Inherit Product Template Form-->
+        <record model="ir.ui.view" id="product_resource_view_form_inherit">
+            <field name="name">product.resource.product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="product_url" widget="url" placeholder="e.g. https://www.tltemplates.com"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

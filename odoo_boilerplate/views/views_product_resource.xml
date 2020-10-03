@@ -1,0 +1,105 @@
+<odoo>
+    <data>
+
+        <!--warehouse dashboard-->
+        <record id="product_resource_view_kanban" model="ir.ui.view">
+            <field name="name">product.resource.kanban</field>
+            <field name="model">product.resource</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_emphasize_colors" create="0">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="url"/>
+                    <field name="product_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+
+                                <div t-attf-class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary">
+                                            <field name="name"/>
+                                        </div>
+                                        <div class="o_secondary">
+                                            <field name="product_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container o_kanban_card_content">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                <field name="description"/>
+                                            </p>
+                                            <field name="url" widget="url"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </t>
+
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!--Product Resource tree-->
+        <record id="product_resource_view_tree" model="ir.ui.view">
+            <field name="name">product.resource.tree</field>
+            <field name="model">product.resource</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <tree string="Resources">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <field name="url" widget="url"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Product Resource form-->
+        <record id="product_resource_view_form" model="ir.ui.view">
+            <field name="name">product.resource.form</field>
+            <field name="model">product.resource</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_confirm" class="btn btn-primary" states="draft" type="object"
+                                string="Confirm"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="product_id"/>
+                            <field name="url"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--Product Resource Search View-->
+        <record id="product_resource_search_form_view" model="ir.ui.view">
+            <field name="name">product.resource.search.form</field>
+            <field name="model">product.resource</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <search string="Product Resource">
+                    <field name="product_id" string="Product"
+                           filter_domain="['|', '|', ('product_id.default_code', 'ilike', self), ('product_id.name', 'ilike', self), ('product_id.barcode', 'ilike', self)]"/>
+                    <filter string="Confirmed" name="filter_state" domain="[('state','=', 'confirm')]"/>
+                    <group expand="0" name="group_by" string="Group By">
+                        <filter name="group_product" string="Product" domain="[]"
+                                context="{'group_by' : 'product_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

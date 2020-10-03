@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <!--Add action to product.resource-->
+        <act_window id="product_resource_to_draft"
+                    name="Resource to Draft"
+                    src_model="product.resource"
+                    res_model="wizard.draft.product.resource"
+                    view_mode="form"
+                    target="new"
+                    multi="True"/>
+        <record model="ir.ui.view" id="grn_to_draft_form_view">
+            <field name="name">wizard.draft.product.resource.form</field>
+            <field name="model">wizard.draft.product.resource</field>
+            <field name="arch" type="xml">
+                <form string="Resources">
+                    <group>
+                        <field name="resource_ids"/>
+                    </group>
+                    <footer>
+                        <button name="action_draft" type="object" string="Set to Draft"
+                                class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
