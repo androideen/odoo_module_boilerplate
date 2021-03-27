@@ -3,4 +3,4 @@ Odoo module boilerplate with some pre-defined features.
 
 I made this module for Odoo 12 Community version. 
 
-Features: https://tltemplates.com/odoo-module-boilerplate/
+Features: https://www.tldevtech.com/odoo-module-boilerplate/
